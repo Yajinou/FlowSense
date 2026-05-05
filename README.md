@@ -1,2 +1,1 @@
-# HumanAICollaboration
-Gosim Hack
+# Gosim Hack
