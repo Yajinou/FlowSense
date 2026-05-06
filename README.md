@@ -1,5 +1,7 @@
 # FlowSense
 
+![FlowSense Demo](assets/demo.png)
+
 Real-time flow-aware conversational AI system.
 
 FlowSense explores how silence, hesitation, interruption, and conversational timing shape human–AI interaction.
