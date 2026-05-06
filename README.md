@@ -1,6 +1,6 @@
 # FlowSense
 
-Youtube Live demo link: (https://youtu.be/rzuFPd_I9Nc)
+YouTube Live demo link: (https://youtu.be/rzuFPd_I9Nc), also flowsense.mov in the repository.
 
 ![FlowSense Demo](demo.png)
 
