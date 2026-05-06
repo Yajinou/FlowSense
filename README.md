@@ -1,6 +1,6 @@
 # FlowSense
 
-![FlowSense Demo](assets/demo.png)
+![FlowSense Demo](demo.png)
 
 Real-time flow-aware conversational AI system.
 
