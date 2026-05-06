@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FlowSense</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f2ed;
+      color: #111827;
+    }
+
+    .app { padding: 32px; }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 52px;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #667085;
+      font-size: 18px;
+      max-width: 760px;
+    }
+
+    .badge {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #111827;
+      color: white;
+      font-size: 14px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr 1fr;
+      gap: 24px;
+      margin-top: 32px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(17, 24, 39, 0.06);
+      border-radius: 30px;
+      padding: 24px;
+      min-height: 570px;
+      box-shadow: 0 18px 45px rgba(17, 24, 39, 0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .panel-title {
+      color: #667085;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+    }
+
+    .transcript {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 12px;
+      max-height: 490px;
+      overflow-y: auto;
+    }
+
+    .line {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #f9fafb;
+      line-height: 1.45;
+      font-size: 15px;
+    }
+
+    .line strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+      color: #475467;
+    }
+
+    .stage {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .circle-zone {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 68px;
+      padding-top: 52px;
+    }
+
+    .speaker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .circle {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      transition: 0.24s ease;
+    }
+
+    .user-circle {
+      background: #fff;
+      border: 2px solid #111827;
+      color: #111827;
+    }
+
+    .agent-circle {
+      background: #111827;
+      color: #fff;
+    }
+
+    .breathing {
+      animation: breathe 1.25s ease-in-out infinite;
+      box-shadow: 0 0 55px rgba(17, 24, 39, 0.22);
+    }
+
+    .soft-breathing {
+      animation: breathe 2.2s ease-in-out infinite;
+      opacity: 0.78;
+    }
+
+    @keyframes breathe {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.13); }
+      100% { transform: scale(1); }
+    }
+
+    .speaker-label {
+      color: #475467;
+      font-size: 15px;
+    }
+
+    .status-box {
+      margin-top: 34px;
+      padding: 20px 24px;
+      border-radius: 24px;
+      background: #f9fafb;
+      width: 90%;
+    }
+
+    .main-status {
+      font-size: 24px;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+
+    .sub-status {
+      margin-top: 8px;
+      color: #667085;
+      line-height: 1.45;
+    }
+
+    .controls {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding-bottom: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .primary {
+      background: #111827;
+      color: white;
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .brain-card {
+      background: #f9fafb;
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .brain-label {
+      color: #667085;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 7px;
+    }
+
+    .brain-value {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .small {
+      font-size: 14px;
+      color: #667085;
+      line-height: 1.45;
+    }
+
+    .keyword {
+      display: inline-block;
+      padding: 4px 9px;
+      margin: 2px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      color: #111827;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="header">
+      <div>
+        <h1>FlowSense</h1>
+        <div class="subtitle">
+          The agent treats silence as part of the conversation, not the end of it.
+        </div>
+      </div>
+      <div class="badge">High-pressure call center demo</div>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <div class="panel-title">Transcript</div>
+        <div id="transcript" class="transcript"></div>
+      </div>
+
+      <div class="panel stage">
+        <div>
+          <div class="circle-zone">
+            <div class="speaker">
+              <div id="userCircle" class="circle user-circle">User</div>
+              <div class="speaker-label">Customer</div>
+            </div>
+
+            <div class="speaker">
+              <div id="agentCircle" class="circle agent-circle">Agent</div>
+              <div class="speaker-label">Voice Agent</div>
+            </div>
+          </div>
+
+          <div class="status-box">
+            <div id="mainStatus" class="main-status">Listening</div>
+            <div id="subStatus" class="sub-status">Click Start Conversation and speak for the demo.</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="recordBtn" class="primary" onclick="startConversation()">Start Conversation</button>
+          <button id="stopBtn" class="danger" onclick="stopConversation()" disabled>Stop</button>
+          <button class="secondary" onclick="resetDemo()">Reset</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">FlowSense Brain</div>
+
+        <div class="brain-card">
+          <div class="brain-label">Detected Scene</div>
+          <div id="brainDetected" class="brain-value">—</div>
+        </div>
+
+        <div class="brain-card">
+          <div class="brain-label">Matched Keywords</div>
+          <div id="brainKeywords" class="small">—</div>
+        </div>
+
+        <div class="brain-card">
+          <div class="brain-label">State</div>
+          <div id="brainState" class="brain-value">LISTENING</div>
+        </div>
+
+        <div class="brain-card">
+          <div class="brain-label">Decision</div>
+          <div id="brainDecision" class="brain-value">Wait for user</div>
+        </div>
+
+        <div class="brain-card">
+          <div class="brain-label">LLM Constraint</div>
+          <div id="brainRule" class="small">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let agentAudio = null;
+    let agentIsSpeaking = false;
+    let autoListening = false;
+    let currentTurnStage = "first_pause";
+    let isRecording = false;
+
+    const userCircle = document.getElementById("userCircle");
+    const agentCircle = document.getElementById("agentCircle");
+    const transcript = document.getElementById("transcript");
+    const recordBtn = document.getElementById("recordBtn");
+    const stopBtn = document.getElementById("stopBtn");
+
+    function setStatus(main, sub = "") {
+      document.getElementById("mainStatus").textContent = main;
+      document.getElementById("subStatus").textContent = sub;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function addTranscript(role, text) {
+      const div = document.createElement("div");
+      div.className = "line";
+      div.innerHTML = `<strong>${role}</strong>${escapeHtml(text)}`;
+      transcript.appendChild(div);
+    }
+
+    function stopAllBreathing() {
+      userCircle.classList.remove("breathing", "soft-breathing");
+      agentCircle.classList.remove("breathing", "soft-breathing");
+    }
+
+    function setUserBreathing(active, soft = false) {
+      userCircle.classList.remove("breathing", "soft-breathing");
+      if (active) userCircle.classList.add(soft ? "soft-breathing" : "breathing");
+    }
+
+    function setAgentBreathing(active, soft = false) {
+      agentCircle.classList.remove("breathing", "soft-breathing");
+      if (active) agentCircle.classList.add(soft ? "soft-breathing" : "breathing");
+    }
+
+    function setBrain(policy) {
+      document.getElementById("brainDetected").textContent = policy.detected_scene || "—";
+      document.getElementById("brainState").textContent = policy.state || "—";
+      document.getElementById("brainDecision").textContent = policy.decision || "—";
+      document.getElementById("brainRule").textContent = policy.required_agent_intent || "—";
+
+      const keywords = policy.matched_keywords || [];
+      document.getElementById("brainKeywords").innerHTML = keywords.length
+        ? keywords.map(k => `<span class="keyword">${escapeHtml(k)}</span>`).join("")
+        : "—";
+    }
+
+    function startConversation() {
+      autoListening = true;
+      currentTurnStage = "first_pause";
+
+      recordBtn.disabled = true;
+      stopBtn.disabled = false;
+
+      addTranscript("System", "Conversation started.");
+      recordTurn();
+    }
+
+    function stopConversation() {
+      autoListening = false;
+      isRecording = false;
+
+      if (agentAudio) {
+        agentAudio.pause();
+        agentAudio.currentTime = 0;
+      }
+
+      agentIsSpeaking = false;
+      recordBtn.disabled = false;
+      stopBtn.disabled = true;
+      stopAllBreathing();
+
+      setStatus("Stopped", "Click Start Conversation to begin again.");
+      addTranscript("System", "Conversation stopped.");
+    }
+
+    async function recordTurn() {
+      if (!autoListening || isRecording) return;
+
+      try {
+        isRecording = true;
+
+        if (agentAudio) {
+          agentAudio.pause();
+          agentAudio.currentTime = 0;
+        }
+
+        stopAllBreathing();
+        setUserBreathing(true);
+        setStatus(
+          "Recording",
+          `Listening for user speech. Turn stage: ${currentTurnStage}`
+        );
+
+        const res = await fetch("/record_turn", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ turn_stage: currentTurnStage })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "record_turn failed");
+        }
+
+        setUserBreathing(false, true);
+
+        addTranscript("Customer", data.user_text);
+        setBrain(data.policy);
+
+        setStatus(
+          data.policy.decision || "Policy selected",
+          `FlowSense detected: ${data.policy.detected_scene || "unknown"}`
+        );
+
+        addTranscript("Agent", data.agent_text);
+
+        currentTurnStage = data.next_turn_stage || data.policy.next_turn_stage || "user_continue";
+
+        await playAgentAudio(data.audio_url, data);
+
+      } catch (err) {
+        stopAllBreathing();
+        setStatus("Error", err.message);
+        addTranscript("System", "Error: " + err.message);
+
+        autoListening = false;
+        recordBtn.disabled = false;
+        stopBtn.disabled = true;
+      } finally {
+        isRecording = false;
+      }
+    }
+
+    async function playAgentAudio(audioUrl, data) {
+      const policy = data.policy || {};
+      agentAudio = new Audio(audioUrl);
+      agentIsSpeaking = true;
+
+      const isMicroResponse =
+        policy.scene === "thinking_silence" ||
+        policy.scene === "thinking_continue" ||
+        policy.scene === "anger_silence" ||
+        policy.scene === "anger_continue";
+
+      setAgentBreathing(true, isMicroResponse);
+      setStatus("Agent speaking", "MiniMax voice constrained by FlowSense policy.");
+
+      await agentAudio.play();
+
+      await new Promise(resolve => {
+        agentAudio.onended = resolve;
+      });
+
+      agentIsSpeaking = false;
+      setAgentBreathing(false);
+
+      const nextAction = data.next_action || policy.next_action || "idle";
+
+      if (autoListening && nextAction === "resume_listening") {
+        setStatus("Listening again", "FlowSense resumes the conversation after the agent speaks.");
+
+        setTimeout(() => {
+          recordTurn();
+        }, 250);
+      } else {
+        autoListening = false;
+        recordBtn.disabled = false;
+        stopBtn.disabled = true;
+        setStatus("Listening", "Click Start Conversation for the next conversation.");
+      }
+    }
+
+    function resetDemo() {
+      autoListening = false;
+      isRecording = false;
+      currentTurnStage = "first_pause";
+
+      if (agentAudio) {
+        agentAudio.pause();
+        agentAudio.currentTime = 0;
+      }
+
+      agentIsSpeaking = false;
+      recordBtn.disabled = false;
+      stopBtn.disabled = true;
+      transcript.innerHTML = "";
+      stopAllBreathing();
+
+      setStatus("Listening", "Click Start Conversation and speak for the demo.");
+
+      setBrain({
+        detected_scene: "—",
+        matched_keywords: [],
+        state: "LISTENING",
+        decision: "Wait for user",
+        required_agent_intent: "—"
+      });
+    }
+  </script>
+</body>
+</html>
