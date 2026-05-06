@@ -1,0 +1,9 @@
+flask
+flask-cors
+websockets
+python-dotenv
+requests
+numpy
+sounddevice
+soundfile
+scipy
