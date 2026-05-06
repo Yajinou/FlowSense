@@ -91,7 +91,7 @@ It is also about:
 * when we interrupt
 * when we stay silent
 
-FlowSense explores conversational timing as an interaction signal, it helps Human-Machine Interaction smoother, and more emotionally aware
+FlowSense explores conversational timing as an interaction signal, which helps Human-Machine Interaction run more smoothly and be more emotionally aware.
 
 ## License
 
