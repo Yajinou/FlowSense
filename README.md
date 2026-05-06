@@ -1,6 +1,6 @@
 # FlowSense
 
-Youtube Live demo link: (uploading, in 2mins)
+Youtube Live demo link: (https://youtu.be/rzuFPd_I9Nc)
 
 ![FlowSense Demo](demo.png)
 
