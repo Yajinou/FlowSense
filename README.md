@@ -47,7 +47,7 @@ Streaming TTS
 ## Run
 
 ```bash
-git clone https://github.com/your-username/flowsense.git
+git clone https://github.com/Yajinou/flowsense.git
 cd flowsense
 pip install -r requirements.txt
 ```
