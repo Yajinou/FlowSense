@@ -1,7 +1,5 @@
 # FlowSense
 
-YouTube Live demo link: (https://youtu.be/rzuFPd_I9Nc), also flowsense.mov in the repository.
-
 ![FlowSense Demo](demo.png)
 
 Real-time flow-aware conversational AI system.
